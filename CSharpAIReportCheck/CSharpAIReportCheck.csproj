@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Aspose.Words.dll" />
     <None Remove="MSWORD.OLB" />
   </ItemGroup>
 

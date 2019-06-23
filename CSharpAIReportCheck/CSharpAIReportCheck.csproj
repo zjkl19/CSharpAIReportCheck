@@ -1,9 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Aspose.Words.dll" />
+    <None Remove="MSWORD.OLB" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Ninject" Version="3.3.4" />

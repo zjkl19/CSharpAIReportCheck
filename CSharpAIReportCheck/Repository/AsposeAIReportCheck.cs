@@ -43,7 +43,7 @@ namespace CSharpAIReportCheck.Repository
 
                     options = new FindReplaceOptions
                     {
-                        ReplacingCallback = new ReplaceEvaluatorFindAndHighlight(),
+                        ReplacingCallback = new ReplaceEvaluatorFindAndHighlight(_doc),
                         Direction = FindReplaceDirection.Forward
                     };
                     _doc.Range.Replace(regex, "", options);
@@ -230,30 +230,35 @@ namespace CSharpAIReportCheck.Repository
             //Console.WriteLine("相似度：" + similarity + " 越接近1越相似");
             return similarity;
         }
-        public static void Run()
-        {
-            // ExStart:FindAndHighlight
-            // The path to the documents directory.
+        //public static void Run()
+        //{
+        //    // ExStart:FindAndHighlight
+        //    // The path to the documents directory.
 
-            string fileName = "TestFile.doc";
+        //    string fileName = "TestFile.doc";
 
-            Document doc = new Document(fileName);
+        //    Document doc = new Document(fileName);
 
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.ReplacingCallback = new ReplaceEvaluatorFindAndHighlight();
-            options.Direction = FindReplaceDirection.Forward;
+        //    FindReplaceOptions options = new FindReplaceOptions();
+        //    options.ReplacingCallback = new ReplaceEvaluatorFindAndHighlight();
+        //    options.Direction = FindReplaceDirection.Forward;
 
-            // We want the "your document" phrase to be highlighted.
-            Regex regex = new Regex("your document", RegexOptions.IgnoreCase);
-            doc.Range.Replace(regex, "", options);
+        //    // We want the "your document" phrase to be highlighted.
+        //    Regex regex = new Regex("your document", RegexOptions.IgnoreCase);
+        //    doc.Range.Replace(regex, "", options);
 
-            // Save the output document.
-            doc.Save("TestFile.doc");
-            // ExEnd:FindAndHighlight
-        }
+        //    // Save the output document.
+        //    doc.Save("TestFile.doc");
+        //    // ExEnd:FindAndHighlight
+        //}
         // ExStart:ReplaceEvaluatorFindAndHighlight
         private class ReplaceEvaluatorFindAndHighlight : IReplacingCallback
         {
+            private Document _doc;
+            public ReplaceEvaluatorFindAndHighlight(Document doc)
+            {
+                _doc = doc;
+            }
             /// <summary>
             /// This method is called by the Aspose.Words find and replace engine for each match.
             /// This method highlights the match string, even if it spans multiple runs.
@@ -279,7 +284,7 @@ namespace CSharpAIReportCheck.Repository
                     (currentNode.GetText().Length <= remainingLength))
                 {
                     runs.Add(currentNode);
-                    remainingLength = remainingLength - currentNode.GetText().Length;
+                    remainingLength -= currentNode.GetText().Length;
 
                     // Select the next Run node. 
                     // Have to loop because there could be other nodes such as BookmarkStart etc.
@@ -298,8 +303,39 @@ namespace CSharpAIReportCheck.Repository
                 }
 
                 // Now highlight all runs in the sequence.
+                //foreach (Run run in runs)
+                //    run.Font.HighlightColor = System.Drawing.Color.Red;
+
+                Comment comment = new Comment(_doc, "Awais Hafeez", "AH", DateTime.Today);
+                comment.Paragraphs.Add(new Paragraph(_doc));
+                comment.FirstParagraph.Runs.Add(new Run(_doc, "Comment text."));
+
+                CommentRangeStart commentRangeStart = new CommentRangeStart(_doc, comment.Id);
+                CommentRangeEnd commentRangeEnd = new CommentRangeEnd(_doc, comment.Id);
+
+                //run1.ParentNode.InsertAfter(commentRangeStart, run1);
+                //run3.ParentNode.InsertAfter(commentRangeEnd, run3);
+                //commentRangeEnd.ParentNode.InsertAfter(comment, commentRangeEnd);
+
                 foreach (Run run in runs)
+                {
                     run.Font.HighlightColor = System.Drawing.Color.Red;
+                    run.ParentNode.InsertAfter(commentRangeStart, run);
+                    run.ParentNode.InsertAfter(commentRangeEnd, run);
+                    commentRangeEnd.ParentNode.InsertAfter(comment, commentRangeEnd);
+
+                }
+
+                //Comment comment = new Comment(doc, "Awais Hafeez", "AH", DateTime.Today);
+                //comment.Paragraphs.Add(new Paragraph(doc));
+                //comment.FirstParagraph.Runs.Add(new Run(doc, "Comment text."));
+
+                //CommentRangeStart commentRangeStart = new CommentRangeStart(doc, comment.Id);
+                //CommentRangeEnd commentRangeEnd = new CommentRangeEnd(doc, comment.Id);
+
+                //run1.ParentNode.InsertAfter(commentRangeStart, run1);
+                //run3.ParentNode.InsertAfter(commentRangeEnd, run3);
+                //commentRangeEnd.ParentNode.InsertAfter(comment, commentRangeEnd);
 
                 // Signal to the replace engine to do nothing because we have already done all what we wanted.
                 return ReplaceAction.Skip;

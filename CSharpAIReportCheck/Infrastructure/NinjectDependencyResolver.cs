@@ -10,7 +10,7 @@ namespace CSharpAIReportCheck.Infrastructure
     {
         public override void Load()
         {
-            Bind<IAIReportCheck>().To<AsposeAIReportCheck>();
+            Bind<IAIReportCheck>().To<AsposeAIReportCheck>().WithConstructorArgument("doc", new Aspose.Words.Document("glz.doc"));
         }
     }
 }

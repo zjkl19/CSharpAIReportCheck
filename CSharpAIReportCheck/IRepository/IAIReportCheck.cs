@@ -11,6 +11,8 @@ namespace CSharpAIReportCheck.IRepository
         void _FindSpecificationsError();
         void _FindNotExplainComponentNo();
 
+        void _GenerateResultReport();
+        void CheckReport();
         //Table GetOverViewTable();
     }
 }

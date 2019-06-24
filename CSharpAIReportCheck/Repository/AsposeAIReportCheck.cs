@@ -27,6 +27,7 @@ namespace CSharpAIReportCheck.Repository
 
         public void _FindUnitError()
         {
+            FindReplaceOptions options;
             MatchCollection matches;
             var regex = new Regex(@"([0-9]Km/h)");
             try
@@ -40,7 +41,7 @@ namespace CSharpAIReportCheck.Repository
                         reportError.Add(new ReportError(ErrorNumber.CMA, "正文"+m.Index.ToString(), "应为km/h"));
                     }
 
-                    FindReplaceOptions options = new FindReplaceOptions
+                    options = new FindReplaceOptions
                     {
                         ReplacingCallback = new ReplaceEvaluatorFindAndHighlight(),
                         Direction = FindReplaceDirection.Forward
@@ -67,7 +68,13 @@ namespace CSharpAIReportCheck.Repository
             double similarity;    //相似度
             //获取word文档中的第一个表格
             var table0 = _doc.GetChildNodes(NodeType.Table, true)[1] as Table;
-
+            //var m=_doc.GetChildNodes(NodeType.Table, true).Count;
+            //for(var i=0;i<m;i++)
+            //{
+            //    var t = _doc.GetChildNodes(NodeType.Table, true)[i] as Table;
+            //    Console.WriteLine(t);
+            //}
+                
             //var table0 = ai.GetOverViewTable();
             var cell = table0.Rows[4].Cells[1];
             string[] splitArray = cell.GetText().Split('\r');    //用GetText()的方法来获取cell中的值
@@ -178,8 +185,9 @@ namespace CSharpAIReportCheck.Repository
         /// <summary>
         /// 字符串相似度计算
         /// </summary>
-        /// <param name="str1"></param>
-        /// <param name="str2"></param>
+        /// <param name="str1">字符串1</param>
+        /// <param name="str2">字符串2</param>
+        /// <returns>两个字符串的相似度</returns>
         public static double Levenshtein(string str1, string str2)
         {
             //计算两个字符串的长度。  
@@ -222,8 +230,6 @@ namespace CSharpAIReportCheck.Repository
             //Console.WriteLine("相似度：" + similarity + " 越接近1越相似");
             return similarity;
         }
-
-
         public static void Run()
         {
             // ExStart:FindAndHighlight

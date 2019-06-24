@@ -15,12 +15,12 @@ namespace CSharpAIReportCheck
 
             IKernel kernel = new StandardKernel(new Infrastructure.NinjectDependencyResolver());
 
-            var a = kernel.Get<IAIReportCheck>();
+            var ai = kernel.Get<IAIReportCheck>();
             
-            string fileName = "glz.doc";
+            //string fileName = "glz.doc";
 
-            var doc = new Document(fileName);
-            var ai = new AsposeAIReportCheck(doc);
+            //var doc = new Document(fileName);
+            //var ai = new AsposeAIReportCheck(doc);
 
             //获取word文档中的第一个表格
             //var table0 = doc.GetChildNodes(NodeType.Table, true)[1] as Table;

@@ -79,7 +79,7 @@ namespace CSharpAIReportCheck.Repository
                 foreach (var sp in Specifications)
                 {
                     similarity = Levenshtein(@s1, @sp);
-                    if (similarity>0.85&& similarity<1)
+                    if (similarity>0.85 && similarity<1)
                     {
                         reportError.Add(new ReportError(ErrorNumber.Description,"汇总表格中主要检测检验依据", "应为"+sp));
                         break;

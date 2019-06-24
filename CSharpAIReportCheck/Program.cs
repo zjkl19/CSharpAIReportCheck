@@ -13,10 +13,10 @@ namespace CSharpAIReportCheck
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-            var kernel = new StandardKernel(new Infrastructure.NinjectDependencyResolver());
+            IKernel kernel = new StandardKernel(new Infrastructure.NinjectDependencyResolver());
 
             var a = kernel.Get<IAIReportCheck>();
-
+            
             string fileName = "glz.doc";
 
             var doc = new Document(fileName);

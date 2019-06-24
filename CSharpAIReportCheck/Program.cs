@@ -13,7 +13,7 @@ namespace CSharpAIReportCheck
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-            IKernel kernel = new StandardKernel(new Infrastructure.NinjectDependencyResolver());
+            IKernel kernel = new StandardKernel(new Infrastructure.NinjectDependencyResolver(new Document("glz.doc")));
 
             var ai = kernel.Get<IAIReportCheck>();
             
